@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MogMax AI — See Your Future Body</title>
+    <meta name="description" content="Upload a photo. Pick your goal. See your future physique in seconds. The #1 AI body transformation app.">
+    <meta property="og:title" content="MogMax AI — See Your Future Body">
+    <meta property="og:description" content="AI-powered body transformation previews. Bulk, cut, or recomp — see the results before you start.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mogmaxai.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0e0e10;
+            --surface: #1c1c1e;
+            --surface-2: #2c2c2e;
+            --border: #333338;
+            --text: #ffffff;
+            --text-muted: #9a9aa0;
+            --pink: #E8556D;
+            --pink-glow: rgba(232, 85, 109, 0.2);
+            --pink-glow-strong: rgba(232, 85, 109, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a { color: var(--pink); text-decoration: none; }
+
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(14, 14, 16, 0.8);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        nav .container {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            font-weight: 800; font-size: 20px; color: var(--text);
+            letter-spacing: -0.03em;
+        }
+        .nav-brand span { color: var(--pink); }
+        .nav-cta {
+            background: var(--pink);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 100px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .nav-cta:hover { opacity: 0.9; transform: scale(1.02); color: white; }
+
+        /* Hero */
+        .hero {
+            padding: 140px 0 80px;
+            text-align: center;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px; left: 50%; transform: translateX(-50%);
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, var(--pink-glow) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 6px 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            position: relative;
+        }
+        .hero-badge-dot {
+            width: 6px; height: 6px;
+            background: var(--pink);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .hero h1 {
+            font-size: clamp(44px, 7vw, 80px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--pink), #ff8a9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-sub {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            position: relative;
+        }
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            position: relative;
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--pink);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 14px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); color: white; }
+        .btn-primary svg { width: 22px; height: 22px; }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 14px 32px;
+            border-radius: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-secondary:hover { border-color: var(--pink); color: var(--text); }
+
+        /* Phone mockup */
+        .hero-visual {
+            margin-top: 60px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        .phone-frame {
+            width: 280px;
+            height: 580px;
+            background: var(--surface);
+            border-radius: 40px;
+            border: 3px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 120px var(--pink-glow);
+        }
+        .phone-notch {
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 28px;
+            background: var(--bg);
+            border-radius: 0 0 20px 20px;
+            z-index: 2;
+        }
+        .phone-screen {
+            width: 100%; height: 100%;
+            background: linear-gradient(180deg, var(--surface) 0%, #1a1a1c 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px 20px;
+            gap: 12px;
+        }
+        .phone-screen-title {
+            font-size: 16px; font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .phone-screen-subtitle {
+            font-size: 11px; color: var(--text-muted);
+        }
+        .phone-before-after {
+            width: 100%;
+            flex: 1;
+            background: var(--bg);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .phone-before-after-label {
+            position: absolute;
+            top: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            z-index: 2;
+        }
+        .label-before { left: 12px; background: var(--surface-2); color: var(--text-muted); }
+        .label-after { right: 12px; background: var(--pink); color: white; }
+        .phone-divider {
+            position: absolute;
+            top: 0; bottom: 0; left: 50%;
+            width: 2px;
+            background: white;
+            z-index: 2;
+        }
+        .phone-divider-handle {
+            position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 32px; height: 32px;
+            background: white;
+            border-radius: 50%;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .phone-share-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .share-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: white;
+        }
+        .share-imessage { background: #34C759; }
+        .share-ig { background: #E1306C; }
+        .share-snap { background: #FFFC00; color: #000; }
+        .share-other { background: var(--surface-2); }
+        .phone-continue {
+            width: 100%;
+            background: var(--surface-2);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Floating elements */
+        .float-left, .float-right {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+        }
+        .float-left { left: 0; }
+        .float-right { right: 0; }
+        .float-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            max-width: 200px;
+        }
+        .float-card-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+        .float-card-value { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; }
+        .float-card-value.pink { color: var(--pink); }
+
+        /* Features */
+        .features { padding: 100px 0; }
+        .features-header { text-align: center; margin-bottom: 60px; }
+        .section-label {
+            font-size: 13px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--pink); margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px 28px;
+            transition: border-color 0.3s;
+        }
+        .feature-card:hover { border-color: var(--pink); }
+        .feature-icon {
+            width: 48px; height: 48px;
+            background: var(--pink-glow);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .feature-title {
+            font-size: 18px; font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .feature-desc {
+            font-size: 14px; color: var(--text-muted); line-height: 1.6;
+        }
+
+        /* How it works */
+        .how-it-works { padding: 100px 0; }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 60px;
+        }
+        .step { text-align: center; }
+        .step-number {
+            width: 64px; height: 64px;
+            background: linear-gradient(135deg, var(--pink), #ff8a9e);
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; font-weight: 800;
+            margin: 0 auto 20px;
+        }
+        .step-title {
+            font-size: 18px; font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .step-desc {
+            font-size: 14px; color: var(--text-muted); line-height: 1.6;
+            max-width: 260px; margin: 0 auto;
+        }
+
+        /* Social proof */
+        .social-proof {
+            padding: 80px 0;
+        }
+        .proof-bar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .proof-stat { text-align: center; }
+        .proof-number {
+            font-size: 40px; font-weight: 900;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, var(--text), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .proof-label { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+        .proof-divider {
+            width: 1px; height: 48px;
+            background: var(--border);
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(circle, var(--pink-glow) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .cta-title {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .cta-sub {
+            font-size: 18px; color: var(--text-muted);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 40px 0;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-copy { font-size: 13px; color: var(--text-muted); }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { font-size: 13px; color: var(--text-muted); }
+        .footer-links a:hover { color: var(--text); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .features-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; gap: 48px; }
+            .proof-bar { flex-direction: column; gap: 32px; }
+            .proof-divider { width: 48px; height: 1px; }
+            .float-left, .float-right { display: none; }
+            .hero-ctas { flex-direction: column; align-items: center; }
+            .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-brand">Mog<span>Max</span> AI</div>
+            <a href="#download" class="nav-cta">Download Free</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                AI-Powered Body Transformation
+            </div>
+            <h1>See Your<br><span class="highlight">Future Body</span></h1>
+            <p class="hero-sub">Upload a photo. Pick your goal. Get a realistic AI preview of your transformation in seconds.</p>
+            <div class="hero-ctas" id="download">
+                <a href="#" class="btn-primary">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    Download on the App Store
+                </a>
+                <a href="#features" class="btn-secondary">See Features</a>
+            </div>
+
+            <!-- Phone mockup -->
+            <div class="hero-visual">
+                <div class="float-left" style="display:none">
+                    <!-- Hidden on mobile, shown on desktop via media query override -->
+                </div>
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="phone-screen-title">Looking Good!</div>
+                        <div class="phone-screen-subtitle">Your AI-powered evolution is complete.</div>
+                        <div class="phone-before-after">
+                            <span class="phone-before-after-label label-before">BEFORE</span>
+                            <span class="phone-before-after-label label-after">AFTER AI</span>
+                            <div class="phone-divider"></div>
+                            <div class="phone-divider-handle">&#x21C6;</div>
+                            <div style="width:100%;height:100%;background:linear-gradient(135deg,#2a2a2e 0%,#1c1c1e 50%,#2c2c2e 100%);display:flex;align-items:center;justify-content:center;">
+                                <div style="font-size:48px;opacity:0.3;">&#x1F4AA;</div>
+                            </div>
+                        </div>
+                        <div class="phone-share-row">
+                            <div class="share-btn share-imessage">&#x1F4AC;</div>
+                            <div class="share-btn share-ig">&#x1F4F7;</div>
+                            <div class="share-btn share-snap">&#x1F47B;</div>
+                            <div class="share-btn share-other">&#x27A1;</div>
+                        </div>
+                        <div class="phone-continue">Continue</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="social-proof">
+        <div class="container">
+            <div class="proof-bar">
+                <div class="proof-stat">
+                    <div class="proof-number">500K+</div>
+                    <div class="proof-label">Transformations Generated</div>
+                </div>
+                <div class="proof-divider"></div>
+                <div class="proof-stat">
+                    <div class="proof-number">4.8</div>
+                    <div class="proof-label">App Store Rating</div>
+                </div>
+                <div class="proof-divider"></div>
+                <div class="proof-stat">
+                    <div class="proof-number">&lt;10s</div>
+                    <div class="proof-label">Average Generation Time</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="features-header">
+                <div class="section-label">Features</div>
+                <div class="section-title">Everything you need to<br>visualize your goals</div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#x26A1;</div>
+                    <div class="feature-title">AI Transformation</div>
+                    <div class="feature-desc">See what you'd look like after bulking, cutting, lean bulking, or body recomping. Powered by the latest AI image generation.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F4CA;</div>
+                    <div class="feature-title">Mog Score</div>
+                    <div class="feature-desc">Get your face and physique rated by AI. Detailed breakdown of jawline, symmetry, physique, and skin quality with a percentile ranking.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F3AF;</div>
+                    <div class="feature-title">Personalized Goals</div>
+                    <div class="feature-desc">Choose from Bulk, Cut, Lean Bulk, or Body Recomp. Adjust intensity from subtle to dramatic. Your transformation, your way.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F4F1;</div>
+                    <div class="feature-title">One-Tap Sharing</div>
+                    <div class="feature-desc">Share your transformation directly to iMessage, Instagram, Snapchat, and more. Show the boys what's coming.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F512;</div>
+                    <div class="feature-title">Privacy First</div>
+                    <div class="feature-desc">No account required. No photos stored on servers. No personal data collected. Everything stays on your device.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F4C8;</div>
+                    <div class="feature-title">Track Progress</div>
+                    <div class="feature-desc">Save every transformation to your history. Compare over time and track your glow up journey.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="features-header">
+                <div class="section-label">How It Works</div>
+                <div class="section-title">Three steps to your<br>future physique</div>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Upload a Photo</div>
+                    <div class="step-desc">Take a new photo or choose one from your camera roll. Front-facing, good lighting works best.</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Pick Your Goal</div>
+                    <div class="step-desc">Choose between Bulk, Cut, Lean Bulk, or Body Recomp. Then select how intense you want the transformation.</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">See Your Future</div>
+                    <div class="step-desc">AI generates a realistic preview of your transformation in seconds. Save it, share it, or use it as motivation.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-title">Ready to see<br>what's possible?</div>
+            <p class="cta-sub">Download MogMax AI and see your future body today.</p>
+            <a href="#" class="btn-primary" style="position:relative;">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                Download on the App Store
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-copy">&copy; 2026 Basement Laboratories Inc. All rights reserved.</div>
+                <div class="footer-links">
+                    <a href="https://basementlaboratories.com/privacy.html">Privacy Policy</a>
+                    <a href="https://basementlaboratories.com/terms.html">Terms of Service</a>
+                    <a href="mailto:jacked@basementlaboratories.com">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
