@@ -2,13 +2,12 @@ import { useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { toPng } from 'html-to-image'
 import ImageUploader from '../components/ImageUploader'
-import RatingCard from '../components/RatingCard'
+import { getTierLabel } from '../utils/ratings'
 
 export default function CleanRatingsTemplate() {
   const [gender, setGender] = useState<'male' | 'female'>('male')
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [psl, setPsl] = useState(5)
-  const [potential, setPotential] = useState(7)
   const templateRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -20,18 +19,26 @@ export default function CleanRatingsTemplate() {
     reader.readAsDataURL(file)
   }
 
+  const pslTier = getTierLabel(psl, 'PSL', gender)
+  const displayRating = psl % 1 === 0 ? psl.toString() : psl.toFixed(1)
+
   const handleDownloadPng = useCallback(async () => {
     if (!templateRef.current) return
     const dataUrl = await toPng(templateRef.current, {
       width: 1080,
       height: 1080,
       pixelRatio: 1,
+      style: {
+        transform: 'none',
+      },
     })
     const link = document.createElement('a')
     link.download = 'mogmaxx-rating.png'
     link.href = dataUrl
     link.click()
   }, [])
+
+  const glowColor = '#E8556D'
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 md:p-8">
@@ -49,30 +56,123 @@ export default function CleanRatingsTemplate() {
         {/* Template Preview */}
         <div className="flex flex-col items-center gap-6">
           <h1 className="font-heading italic text-3xl font-bold">Template Preview</h1>
-          <div
-            ref={templateRef}
-            className="relative overflow-hidden rounded-lg"
-            style={{ width: 540, height: 540, background: '#1C1C1E' }}
-          >
-            {/* Watermark badge - top left */}
-            <div className="absolute bottom-3 right-4 z-10 flex items-center gap-[7px] px-[14px] py-[7px] rounded-[15px] border-[0.75px] border-accent/40" style={{ background: 'rgba(0, 0, 0, 0.65)' }}>
-              <img src="/logo.png" alt="MogMaxx" className="w-[22px] h-[22px] rounded-[5px]" />
-              <span className="text-white text-[24px] font-[800] tracking-[1px]">MOGMAXX</span>
-            </div>
+          <div className="border border-white/20 rounded-lg" style={{ width: 540, height: 540, overflow: 'hidden' }}>
+            <div
+              ref={templateRef}
+              className="relative overflow-hidden flex flex-col items-center"
+              style={{
+                width: 1080,
+                height: 1080,
+                background: '#1C1C1E',
+                transform: 'scale(0.5)',
+                transformOrigin: 'top left',
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: '#1C1C1E',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '80px 80px',
+                }}
+              >
+                {/* Logo top left */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 40,
+                    left: 40,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 14,
+                    background: '#1C1C1E',
+                    padding: '14px 28px',
+                    borderRadius: 30,
+                    border: '1.5px solid rgba(232, 85, 109, 0.4)',
+                  }}
+                >
+                  <img src="/logo.png" alt="MogMaxx" style={{ width: 44, height: 44, borderRadius: 10, background: '#000' }} />
+                  <span style={{ color: '#ffffff', fontSize: 48, fontWeight: 800, letterSpacing: 2 }}>MOGMAXX</span>
+                </div>
 
-            {/* Image circle */}
-            <div className="flex justify-center mt-4">
-              <ImageUploader
-                imageUrl={imageUrl}
-                onImageChange={setImageUrl}
-                size={240}
-              />
-            </div>
+                {/* Hexagonal image frame */}
+                <div style={{ position: 'relative', width: 440, height: 440, marginBottom: 64 }}>
+                  <svg
+                    viewBox="0 0 440 440"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'visible',
+                      filter: `
+                        drop-shadow(0 0 6px ${glowColor})
+                        drop-shadow(0 0 15px ${glowColor}aa)
+                        drop-shadow(0 0 35px ${glowColor}66)
+                        drop-shadow(0 0 70px ${glowColor}33)
+                      `,
+                      zIndex: 1,
+                    }}
+                  >
+                    <polygon
+                      points="220,3 408,112 408,330 220,440 32,330 32,112"
+                      fill="none"
+                      stroke={glowColor}
+                      strokeWidth="5"
+                    />
+                  </svg>
+                  <div style={{ position: 'absolute', inset: 0 }}>
+                    <ImageUploader
+                      imageUrl={imageUrl}
+                      onImageChange={setImageUrl}
+                      size={440}
+                      shape="hexagon"
+                      className="!bg-transparent !border-0"
+                    />
+                  </div>
+                </div>
 
-            {/* Rating cards */}
-            <div className="grid grid-cols-2 gap-4 px-5 mt-5">
-              <RatingCard label="PSL" rating={psl} gender={gender} />
-              <RatingCard label="POTENTIAL" rating={potential} gender={gender} />
+                {/* PSL Rating number */}
+                <div
+                  style={{
+                    fontSize: 180,
+                    fontWeight: 800,
+                    color: '#fff',
+                    lineHeight: 1,
+                    textShadow: `
+                      0 0 10px ${glowColor},
+                      0 0 20px ${glowColor},
+                      0 0 40px ${glowColor}cc,
+                      0 0 80px ${glowColor}88,
+                      0 0 120px ${glowColor}44
+                    `,
+                    letterSpacing: -4,
+                  }}
+                >
+                  {displayRating}
+                </div>
+
+                {/* Tier label */}
+                <div
+                  style={{
+                    fontSize: 44,
+                    fontWeight: 600,
+                    color: '#ffffffaa',
+                    letterSpacing: 18,
+                    textTransform: 'uppercase',
+                    marginTop: 8,
+                  }}
+                >
+                  {pslTier}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -80,9 +180,9 @@ export default function CleanRatingsTemplate() {
         {/* Controls */}
         <div className="flex flex-col gap-6">
           <div className="bg-card/80 rounded-xl p-6 w-80" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>
-            <h2 className="text-xl font-bold mb-4">Customize Ratings</h2>
+            <h2 className="text-xl font-bold mb-4">Customize Rating</h2>
 
-            {/* Gender toggle */}
+            {/* Gender toggle + Upload (image setup group) */}
             <div className="grid grid-cols-2 gap-1 mb-4 bg-white/5 rounded-lg p-1">
               <button
                 onClick={() => setGender('male')}
@@ -102,11 +202,10 @@ export default function CleanRatingsTemplate() {
               </button>
             </div>
 
-            {/* Upload */}
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleUpload} className="hidden" />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-full py-2.5 rounded-lg bg-white/5 text-sm font-medium mb-6 hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-lg bg-white/5 text-sm font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -114,10 +213,12 @@ export default function CleanRatingsTemplate() {
               Upload Image
             </button>
 
+            <div className="border-t border-white/10 my-5" />
+
             {/* PSL slider */}
-            <div className="mb-4">
+            <div className="mb-5">
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-medium">PSL Rating</label>
+                <label className="text-sm font-bold">PSL Rating</label>
                 <input
                   type="number"
                   value={psl.toFixed(1)}
@@ -138,43 +239,21 @@ export default function CleanRatingsTemplate() {
               />
             </div>
 
-            {/* Potential slider */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-medium">Potential</label>
-                <input
-                  type="number"
-                  value={potential.toFixed(1)}
-                  onChange={(e) => setPotential(Math.max(1, Math.min(8, parseFloat(e.target.value) || 1)))}
-                  className="w-16 bg-white/5 rounded-lg px-2 py-1 text-sm text-right"
-                  min={1}
-                  max={8}
-                  step={0.1}
-                />
-              </div>
-              <input
-                type="range"
-                min={1}
-                max={8}
-                step={0.1}
-                value={potential}
-                onChange={(e) => setPotential(parseFloat(e.target.value))}
-              />
-            </div>
+            <div className="border-t border-white/10 my-5" />
 
             {/* Download buttons */}
             <button
               onClick={handleDownloadPng}
-              className="w-full py-3 rounded-lg bg-accent text-white font-semibold text-sm mb-3 hover:bg-accent/90 transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-lg bg-accent text-white font-semibold text-sm mb-2 hover:bg-accent/90 transition-colors flex items-center justify-center gap-2"
             >
               Download Image (.png)
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
               </svg>
             </button>
-            <button className="w-full py-3 rounded-lg bg-white/5 text-sm font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2">
+            <button className="w-full py-2.5 rounded-lg text-secondary text-xs font-medium hover:text-white transition-colors flex items-center justify-center gap-2">
               Download Video (.mp4)
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
               </svg>
             </button>
@@ -190,7 +269,7 @@ export default function CleanRatingsTemplate() {
               </li>
               <li className="flex gap-3">
                 <span className="text-accent font-semibold shrink-0">2.</span>
-                Adjust PSL and Potential ratings (1-8 scale)
+                Adjust PSL rating (1-8 scale)
               </li>
               <li className="flex gap-3">
                 <span className="text-accent font-semibold shrink-0">3.</span>

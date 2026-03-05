@@ -105,8 +105,8 @@ export default function RatingsTemplate() {
                 <div
                   style={{
                     position: 'absolute',
-                    top: 36,
-                    left: 48,
+                    top: 40,
+                    left: 40,
                     display: 'flex',
                     alignItems: 'center',
                     gap: 14,
@@ -182,10 +182,10 @@ export default function RatingsTemplate() {
                 {/* Tier label */}
                 <div
                   style={{
-                    fontSize: 52,
-                    fontWeight: 700,
-                    color: '#ffffff',
-                    letterSpacing: 20,
+                    fontSize: 48,
+                    fontWeight: 600,
+                    color: '#ffffffaa',
+                    letterSpacing: 18,
                     textTransform: 'uppercase',
                     marginTop: 12,
                   }}
