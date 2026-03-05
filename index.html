@@ -1,130 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MogMaxx — See Your Future Body</title>
-    <meta name="description" content="Upload a photo. Pick your goal. See your future physique in seconds. The #1 AI body transformation app.">
-    <meta property="og:title" content="MogMaxx — See Your Future Body">
-    <meta property="og:description" content="AI-powered body transformation previews. Bulk, cut, or recomp — see the results before you start.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mogmaxx.com">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #000;
-            color: #fff;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        a { text-decoration: none; }
-
-        /* Main content */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 80px 24px 40px;
-        }
-
-        .brand {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 48px;
-            color: #fff;
-        }
-        .brand span { color: #E8556D; }
-
-        h1 {
-            font-size: clamp(40px, 8vw, 72px);
-            font-weight: 900;
-            line-height: 1.05;
-            letter-spacing: -0.04em;
-            margin-bottom: 20px;
-            max-width: 600px;
-        }
-
-        .subtitle {
-            font-size: clamp(16px, 2.5vw, 20px);
-            color: #999;
-            margin-bottom: 48px;
-            font-weight: 400;
-        }
-
-        .app-store-badge {
-            transition: opacity 0.2s;
-        }
-        .app-store-badge:hover { opacity: 0.8; }
-        .app-store-badge img {
-            height: 54px;
-            width: auto;
-        }
-
-        /* Phone screenshot */
-        .phone-wrapper {
-            margin-top: 64px;
-            position: relative;
-        }
-        .phone-frame {
-            width: 280px;
-            border-radius: 36px;
-            border: 4px solid #222;
-            overflow: hidden;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-        }
-        .phone-frame img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Footer */
-        footer {
-            padding: 24px;
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-        }
-        footer a {
-            font-size: 13px;
-            color: #555;
-            transition: color 0.2s;
-        }
-        footer a:hover { color: #999; }
-    </style>
-</head>
-<body>
-    <main>
-        <div class="brand">Mog<span>Maxx</span></div>
-        <h1>See your future body</h1>
-        <p class="subtitle">Trusted by 500K+ transformations</p>
-        <a href="https://apps.apple.com/ca/app/bulkorcut-body-visualizer/id6757873783" class="app-store-badge">
-            <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store">
-        </a>
-        <div class="phone-wrapper">
-            <div class="phone-frame">
-                <img src="screenshot.jpg" alt="MogMaxx transformation preview">
-            </div>
-        </div>
-    </main>
-    <footer>
-        <a href="https://basementlaboratories.com/privacy.html">Privacy</a>
-        <a href="https://basementlaboratories.com/terms.html">Terms</a>
-        <a href="mailto:jacked@basementlaboratories.com">Contact</a>
-    </footer>
-</body>
+    <meta name="description" content="Upload a photo. Pick your goal. See your future physique in seconds. The #1 AI body transformation app." />
+    <meta property="og:title" content="MogMaxx — See Your Future Body" />
+    <meta property="og:description" content="AI-powered body transformation previews. Bulk, cut, or recomp — see the results before you start." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mogmaxx.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
