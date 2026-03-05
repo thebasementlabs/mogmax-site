@@ -79,7 +79,7 @@ export default function RatingsTemplate() {
               style={{
                 width: 1080,
                 height: 1920,
-                background: '#000000',
+                background: '#1C1C1E',
                 transform: 'scale(0.3333)',
                 transformOrigin: 'top left',
               }}
@@ -88,25 +88,17 @@ export default function RatingsTemplate() {
               <div
                 style={{
                   position: 'absolute',
-                  top: 60,
-                  left: 60,
-                  right: 60,
-                  bottom: 60,
-                  borderRadius: 48,
-                  border: `2px solid ${glowColor}88`,
-                  boxShadow: `
-                    inset 0 0 60px ${glowColor}12,
-                    inset 0 0 120px ${glowColor}08,
-                    0 0 15px ${glowColor}44,
-                    0 0 40px ${glowColor}22,
-                    0 0 80px ${glowColor}11
-                  `,
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  borderRadius: 0,
                   background: '#1C1C1E',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '80px 80px',
+                  padding: '120px 80px 80px',
                 }}
               >
                 {/* Logo top left */}
@@ -118,7 +110,7 @@ export default function RatingsTemplate() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: 14,
-                    background: 'rgba(0, 0, 0, 0.65)',
+                    background: '#1C1C1E',
                     padding: '14px 28px',
                     borderRadius: 30,
                     border: '1.5px solid rgba(232, 85, 109, 0.4)',
@@ -129,10 +121,10 @@ export default function RatingsTemplate() {
                 </div>
 
                 {/* Hexagonal image frame */}
-                <div style={{ position: 'relative', width: 532, height: 582, marginBottom: 72 }}>
+                <div style={{ position: 'relative', width: 532, height: 532, marginBottom: 72 }}>
                   {/* SVG hex border with neon glow via drop-shadow */}
                   <svg
-                    viewBox="0 0 532 582"
+                    viewBox="0 0 532 532"
                     style={{
                       position: 'absolute',
                       inset: 0,
@@ -149,7 +141,7 @@ export default function RatingsTemplate() {
                     }}
                   >
                     <polygon
-                      points="266,8 493,148 493,434 266,574 39,434 39,148"
+                      points="266,3 494,136 494,399 266,532 37,399 37,136"
                       fill="none"
                       stroke={glowColor}
                       strokeWidth="5"
@@ -162,6 +154,7 @@ export default function RatingsTemplate() {
                       onImageChange={setImageUrl}
                       size={532}
                       shape="hexagon"
+                      className="!bg-transparent !border-0"
                     />
                   </div>
                 </div>
