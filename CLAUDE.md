@@ -19,7 +19,7 @@ No test framework is configured.
 ## Architecture
 
 - **Stack:** React 18, TypeScript, Vite, Tailwind CSS 3, react-router-dom v6
-- **Routing:** `src/main.tsx` defines all routes — `/` (Landing), `/creator` (CreatorTools), `/creator/clean-ratings-template`, `/creator/ratings-template`
+- **Routing:** `src/main.tsx` defines all routes — `/` (Landing), `/creator` (CreatorTools), `/creator/clean-ratings-template`, `/creator/ratings-template`, `/creator/example-content`
 - **Pages:** `src/pages/` — each page is a self-contained route component
 - **Components:** `src/components/` — shared components like `ImageUploader` (drag/zoom image widget) and `RatingCard`
 - **Utilities:** `src/utils/ratings.ts` — rating calculation helpers
