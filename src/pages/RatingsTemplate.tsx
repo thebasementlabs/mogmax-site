@@ -262,15 +262,15 @@ export default function RatingsTemplate() {
 
         {/* Controls */}
         <div className="flex flex-col gap-6">
-          <div className="bg-card border border-border rounded-lg p-6 w-80">
+          <div className="bg-card/80 rounded-xl p-6 w-80" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>
             <h2 className="text-xl font-bold mb-4">Customize Ratings</h2>
 
             {/* Gender toggle */}
-            <div className="grid grid-cols-2 gap-2 mb-4">
+            <div className="grid grid-cols-2 gap-1 mb-4 bg-white/5 rounded-lg p-1">
               <button
                 onClick={() => setGender('male')}
                 className={`py-2 rounded-md text-sm font-medium transition-colors ${
-                  gender === 'male' ? 'bg-accent text-white' : 'text-secondary hover:text-white hover:bg-white/5'
+                  gender === 'male' ? 'bg-accent text-white' : 'text-secondary hover:text-white'
                 }`}
               >
                 Male
@@ -278,7 +278,7 @@ export default function RatingsTemplate() {
               <button
                 onClick={() => setGender('female')}
                 className={`py-2 rounded-md text-sm font-medium transition-colors ${
-                  gender === 'female' ? 'bg-accent text-white' : 'text-secondary hover:text-white hover:bg-white/5'
+                  gender === 'female' ? 'bg-accent text-white' : 'text-secondary hover:text-white'
                 }`}
               >
                 Female
@@ -289,7 +289,7 @@ export default function RatingsTemplate() {
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleUpload} className="hidden" />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-full py-2.5 rounded-md border border-border text-sm font-medium mb-6 hover:border-accent/50 transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-lg bg-white/5 text-sm font-medium mb-6 hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -305,7 +305,7 @@ export default function RatingsTemplate() {
                   type="number"
                   value={overallRating.toFixed(1)}
                   onChange={(e) => setOverallRating(Math.max(1, Math.min(8, parseFloat(e.target.value) || 1)))}
-                  className="w-16 bg-background border border-border rounded px-2 py-1 text-sm text-right"
+                  className="w-16 bg-white/5 rounded-lg px-2 py-1 text-sm text-right"
                   min={1}
                   max={8}
                   step={0.1}
@@ -321,7 +321,7 @@ export default function RatingsTemplate() {
               />
             </div>
 
-            <div className="border-t border-border my-4" />
+            <div className="border-t border-white/10 my-4" />
 
             {/* Metric sliders */}
             {METRICS.map(m => (
@@ -332,7 +332,7 @@ export default function RatingsTemplate() {
                     type="number"
                     value={ratings[m.key].toFixed(1)}
                     onChange={(e) => updateRating(m.key, Math.max(1, Math.min(8, parseFloat(e.target.value) || 1)))}
-                    className="w-16 bg-background border border-border rounded px-2 py-1 text-sm text-right"
+                    className="w-16 bg-white/5 rounded-lg px-2 py-1 text-sm text-right"
                     min={1}
                     max={8}
                     step={0.1}
@@ -352,7 +352,7 @@ export default function RatingsTemplate() {
             {/* Download button */}
             <button
               onClick={handleDownloadPng}
-              className="w-full py-3 rounded-md bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors flex items-center justify-center gap-2 mt-4"
+              className="w-full py-3 rounded-lg bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors flex items-center justify-center gap-2 mt-4"
             >
               Download Template (.png)
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -362,7 +362,7 @@ export default function RatingsTemplate() {
           </div>
 
           {/* How to Use */}
-          <div className="bg-card border border-border rounded-lg p-6 w-80">
+          <div className="bg-card/80 rounded-xl p-6 w-80" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>
             <h2 className="text-xl font-bold mb-3">How to Use</h2>
             <ol className="text-sm text-secondary space-y-3 list-none">
               <li className="flex gap-3">

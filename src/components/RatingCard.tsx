@@ -16,14 +16,16 @@ export default function RatingCard({ label, rating, gender, size = 'default' }: 
   const displayRating = Number.isInteger(rating) ? rating.toString() : rating.toFixed(1)
 
   return (
-    <div className={`bg-card/80 border border-accent/30 rounded-lg flex flex-col ${lg ? 'p-8 gap-2' : 'p-4 gap-1'}`}>
-      <div className={`text-accent font-bold tracking-wider uppercase ${lg ? 'text-2xl' : 'text-xs'}`}>{label}</div>
-      <div className={`flex items-baseline ${lg ? 'gap-3' : 'gap-2'}`}>
-        <span className={`font-bold ${lg ? 'text-7xl' : 'text-3xl'}`}>{displayRating}</span>
-        <span className={`rounded-full shrink-0 relative top-[-2px] ${lg ? 'w-4 h-4' : 'w-2 h-2'}`} style={{ backgroundColor: color }} />
-        <span className={`text-secondary ${lg ? 'text-2xl' : 'text-sm'}`}>{tier}</span>
+    <div
+      className={`bg-card/80 rounded-xl flex flex-col ${lg ? 'p-8 gap-3' : 'p-5 gap-2'}`}
+      style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.3)' }}
+    >
+      <div className={`text-secondary font-semibold tracking-wider uppercase ${lg ? 'text-xl' : 'text-[11px]'}`}>{label}</div>
+      <div className={`flex items-baseline ${lg ? 'gap-4' : 'gap-2.5'}`}>
+        <span className={`font-bold ${lg ? 'text-7xl' : 'text-4xl'}`} style={{ color }}>{displayRating}</span>
+        <span className={`text-white/60 font-medium ${lg ? 'text-2xl' : 'text-sm'}`}>{tier}</span>
       </div>
-      <div className={`w-full bg-white/10 rounded-full overflow-hidden ${lg ? 'h-3 mt-2' : 'h-2 mt-1'}`}>
+      <div className={`w-full bg-white/10 rounded-full overflow-hidden ${lg ? 'h-3 mt-1' : 'h-1.5 mt-1'}`}>
         <div
           className="h-full rounded-full transition-all duration-300"
           style={{ width: `${percent}%`, backgroundColor: color }}
