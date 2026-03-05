@@ -83,25 +83,6 @@ export default function CleanRatingsTemplate() {
                   padding: '80px 80px',
                 }}
               >
-                {/* Logo top left */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 40,
-                    left: 40,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 14,
-                    background: '#1C1C1E',
-                    padding: '14px 28px',
-                    borderRadius: 30,
-                    border: '1.5px solid rgba(232, 85, 109, 0.4)',
-                  }}
-                >
-                  <img src="/logo.png" alt="MogMaxx" style={{ width: 44, height: 44, borderRadius: 10, background: '#000' }} />
-                  <span style={{ color: '#ffffff', fontSize: 48, fontWeight: 800, letterSpacing: 2 }}>MOGMAXX</span>
-                </div>
-
                 {/* Hexagonal image frame */}
                 <div style={{ position: 'relative', width: 440, height: 440, marginBottom: 64 }}>
                   <svg
@@ -137,6 +118,32 @@ export default function CleanRatingsTemplate() {
                       className="!bg-transparent !border-0"
                     />
                   </div>
+                </div>
+
+                {/* Logo above rating */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 14,
+                    background: '#1C1C1E',
+                    padding: '14px 28px',
+                    borderRadius: 30,
+                    border: '1.5px solid rgba(232, 85, 109, 0.4)',
+                    marginBottom: 24,
+                  }}
+                >
+                  <img src="/logo.png" alt="MogMaxx" style={{ width: 57, height: 57, borderRadius: 13, background: '#000' }} />
+                  <span style={{ color: '#ffffff', fontSize: 48, fontWeight: 800, letterSpacing: 2 }}>MOGMAXX</span>
+                  <img
+                    src="/app-store-icon.svg"
+                    alt="App Store"
+                    style={{
+                      width: 57,
+                      height: 57,
+                      borderRadius: 13,
+                    }}
+                  />
                 </div>
 
                 {/* PSL Rating number */}
