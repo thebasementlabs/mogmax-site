@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { toPng } from 'html-to-image'
 import ImageUploader from '../components/ImageUploader'
-import { getTierLabel, getProgressPercent } from '../utils/ratings'
+import { getTierLabel, getRatingColor, getProgressPercent } from '../utils/ratings'
 
 const METRICS = [
   { key: 'eyeArea', label: 'Eye Area', default: 6.5 },
@@ -200,50 +200,51 @@ export default function RatingsTemplate() {
                   {pslTier}
                 </div>
 
-                {/* Metric bars */}
-                <div style={{ width: '100%', marginTop: 80, display: 'flex', flexDirection: 'column', gap: 48 }}>
+                {/* Metric stat cards — 2x2 grid */}
+                <div style={{ width: '100%', marginTop: 80, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
                   {METRICS.map(m => {
                     const val = ratings[m.key]
                     const pct = getProgressPercent(val)
+                    const metricColor = getRatingColor(val)
+                    const metricTier = getTierLabel(val, m.label, gender)
+                    const displayVal = Number.isInteger(val) ? val.toString() : val.toFixed(1)
                     return (
-                      <div key={m.key}>
+                      <div
+                        key={m.key}
+                        style={{
+                          background: '#2C2C2E',
+                          border: '1px solid #3A3A3C',
+                          borderRadius: 24,
+                          padding: '40px 36px 36px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: 16,
+                        }}
+                      >
+                        {/* Label */}
                         <div
                           style={{
-                            fontSize: 42,
-                            fontWeight: 500,
-                            fontStyle: 'italic',
-                            color: '#ffffffbb',
-                            marginBottom: 16,
+                            fontSize: 36,
+                            fontWeight: 600,
+                            color: '#8E8E93',
+                            letterSpacing: 4,
+                            textTransform: 'uppercase',
                           }}
                         >
                           {m.label}
                         </div>
-                        {/* Bar container — NO overflow hidden so glow bleeds */}
-                        <div style={{ position: 'relative', width: '100%', height: 32 }}>
-                          {/* Track background */}
-                          <div
-                            style={{
-                              position: 'absolute',
-                              inset: 0,
-                              background: '#1a1e2a',
-                              borderRadius: 16,
-                            }}
-                          />
-                          {/* Glow layer (wider, blurred) */}
-                          <div
-                            style={{
-                              position: 'absolute',
-                              top: -6,
-                              bottom: -6,
-                              left: 0,
-                              width: `${pct}%`,
-                              borderRadius: 20,
-                              background: glowColor,
-                              filter: 'blur(12px)',
-                              opacity: 0.6,
-                            }}
-                          />
-                          {/* Fill bar */}
+                        {/* Score + dot + tier */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                          <span style={{ fontSize: 72, fontWeight: 700, color: metricColor, lineHeight: 1 }}>
+                            {displayVal}
+                          </span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.6)', fontSize: 32, fontWeight: 500 }}>
+                            <span style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: metricColor, display: 'inline-block' }} />
+                            {metricTier}
+                          </span>
+                        </div>
+                        {/* Progress bar */}
+                        <div style={{ position: 'relative', width: '100%', height: 20, background: 'rgba(255,255,255,0.1)', borderRadius: 10, overflow: 'hidden' }}>
                           <div
                             style={{
                               position: 'absolute',
@@ -251,9 +252,9 @@ export default function RatingsTemplate() {
                               bottom: 0,
                               left: 0,
                               width: `${pct}%`,
-                              borderRadius: 16,
-                              background: `linear-gradient(90deg, ${glowColor}cc, ${glowColor})`,
-                              boxShadow: `0 0 8px ${glowColor}aa`,
+                              borderRadius: 10,
+                              backgroundColor: metricColor,
+                              boxShadow: `0 0 12px ${metricColor}80`,
                             }}
                           />
                         </div>
