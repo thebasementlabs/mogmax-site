@@ -1,17 +1,14 @@
-import { useState, useRef, useCallback, useMemo } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { toPng } from 'html-to-image'
 import ImageUploader from '../components/ImageUploader'
-import { getTierLabel, getRatingColor, getProgressPercent } from '../utils/ratings'
+import { getTierLabel, getProgressPercent } from '../utils/ratings'
 
 const METRICS = [
   { key: 'eyeArea', label: 'Eye Area', default: 6.5 },
   { key: 'jawline', label: 'Jawline', default: 5 },
   { key: 'cheekbones', label: 'Cheekbones', default: 6 },
   { key: 'harmony', label: 'Harmony', default: 5.5 },
-  { key: 'dimorphism', label: 'Dimorphism', default: 5 },
-  { key: 'skin', label: 'Skin', default: 7 },
-  { key: 'hair', label: 'Hair', default: 4 },
 ] as const
 
 type MetricKey = typeof METRICS[number]['key']
@@ -22,6 +19,7 @@ export default function RatingsTemplate() {
   const [ratings, setRatings] = useState<Record<MetricKey, number>>(
     Object.fromEntries(METRICS.map(m => [m.key, m.default])) as Record<MetricKey, number>
   )
+  const [overallRating, setOverallRating] = useState(5.8)
   const templateRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -37,30 +35,7 @@ export default function RatingsTemplate() {
     reader.readAsDataURL(file)
   }
 
-  const pslAverage = useMemo(() => {
-    const values = METRICS.map(m => ratings[m.key])
-    return values.reduce((a, b) => a + b, 0) / values.length
-  }, [ratings])
-
-  const pslTier = getTierLabel(pslAverage, 'PSL', gender)
-
-  const topHalo = useMemo(() => {
-    let bestLabel: string = METRICS[0].label
-    let bestVal = ratings[METRICS[0].key]
-    for (const m of METRICS) {
-      if (ratings[m.key] > bestVal) { bestVal = ratings[m.key]; bestLabel = m.label }
-    }
-    return bestLabel
-  }, [ratings])
-
-  const topFailo = useMemo(() => {
-    let worstLabel: string = METRICS[0].label
-    let worstVal = ratings[METRICS[0].key]
-    for (const m of METRICS) {
-      if (ratings[m.key] < worstVal) { worstVal = ratings[m.key]; worstLabel = m.label }
-    }
-    return worstLabel
-  }, [ratings])
+  const pslTier = getTierLabel(overallRating, 'PSL', gender)
 
   const handleDownloadPng = useCallback(async () => {
     if (!templateRef.current) return
@@ -77,6 +52,9 @@ export default function RatingsTemplate() {
     link.href = dataUrl
     link.click()
   }, [])
+
+  const glowColor = '#E8556D'
+  const displayRating = overallRating % 1 === 0 ? overallRating.toString() : overallRating.toFixed(1)
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center p-4 md:p-8">
@@ -97,66 +75,193 @@ export default function RatingsTemplate() {
           <div className="border border-white/20 rounded-lg" style={{ width: 360, height: 640, overflow: 'hidden' }}>
             <div
               ref={templateRef}
-              className="relative overflow-hidden flex flex-col"
-              style={{ width: 1080, height: 1920, background: '#1a1a1a', transform: 'scale(0.3333)', transformOrigin: 'top left' }}
+              className="relative overflow-hidden flex flex-col items-center"
+              style={{
+                width: 1080,
+                height: 1920,
+                background: '#000000',
+                transform: 'scale(0.3333)',
+                transformOrigin: 'top left',
+              }}
             >
-              {/* Logo top left */}
-              <div className="flex items-center gap-[14px] px-[60px] pt-[60px]">
-                <img src="/logo.png" alt="MogMaxx" className="w-[44px] h-[44px] rounded-[10px]" />
-                <span className="text-white/60 text-[36px] font-[700]">@mogmaxx</span>
-              </div>
-
-              {/* Header: Photo + PSL Rating */}
-              <div className="flex items-center gap-[48px] px-[60px] mt-[60px]">
-                <div className="shrink-0">
-                  <ImageUploader
-                    imageUrl={imageUrl}
-                    onImageChange={setImageUrl}
-                    size={280}
-                  />
+              {/* Card container with neon glow border */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 60,
+                  left: 60,
+                  right: 60,
+                  bottom: 60,
+                  borderRadius: 48,
+                  border: `2px solid ${glowColor}88`,
+                  boxShadow: `
+                    inset 0 0 60px ${glowColor}12,
+                    inset 0 0 120px ${glowColor}08,
+                    0 0 15px ${glowColor}44,
+                    0 0 40px ${glowColor}22,
+                    0 0 80px ${glowColor}11
+                  `,
+                  background: '#1C1C1E',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '80px 80px',
+                }}
+              >
+                {/* Logo top left */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 36,
+                    left: 48,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 14,
+                    background: 'rgba(0, 0, 0, 0.65)',
+                    padding: '14px 28px',
+                    borderRadius: 30,
+                    border: '1.5px solid rgba(232, 85, 109, 0.4)',
+                  }}
+                >
+                  <img src="/logo.png" alt="MogMaxx" style={{ width: 44, height: 44, borderRadius: 10, background: '#000' }} />
+                  <span style={{ color: '#ffffff', fontSize: 48, fontWeight: 800, letterSpacing: 2 }}>MOGMAXX</span>
                 </div>
-                <div className="flex flex-col items-center flex-1">
-                  <span className="text-white text-[52px] font-[800] tracking-[4px] uppercase">PSL Rating</span>
-                  <span className="text-white text-[44px] font-[700] mt-[8px]">
-                    &#9733; {pslTier.toUpperCase()} &#9733;
-                  </span>
-                  <span className="text-white text-[56px] font-[800] mt-[4px]">
-                    {pslAverage.toFixed(1)} / 8
-                  </span>
+
+                {/* Hexagonal image frame */}
+                <div style={{ position: 'relative', width: 532, height: 582, marginBottom: 72 }}>
+                  {/* SVG hex border with neon glow via drop-shadow */}
+                  <svg
+                    viewBox="0 0 532 582"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'visible',
+                      filter: `
+                        drop-shadow(0 0 6px ${glowColor})
+                        drop-shadow(0 0 15px ${glowColor}aa)
+                        drop-shadow(0 0 35px ${glowColor}66)
+                        drop-shadow(0 0 70px ${glowColor}33)
+                      `,
+                      zIndex: 1,
+                    }}
+                  >
+                    <polygon
+                      points="266,8 493,148 493,434 266,574 39,434 39,148"
+                      fill="none"
+                      stroke={glowColor}
+                      strokeWidth="5"
+                    />
+                  </svg>
+                  {/* Hex image */}
+                  <div style={{ position: 'absolute', inset: 0 }}>
+                    <ImageUploader
+                      imageUrl={imageUrl}
+                      onImageChange={setImageUrl}
+                      size={532}
+                      shape="hexagon"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Divider */}
-              <div className="mx-[60px] mt-[48px]" style={{ borderTop: '3px solid #444' }} />
+                {/* PSL Rating number */}
+                <div
+                  style={{
+                    fontSize: 200,
+                    fontWeight: 800,
+                    color: '#fff',
+                    lineHeight: 1,
+                    textShadow: `
+                      0 0 10px ${glowColor},
+                      0 0 20px ${glowColor},
+                      0 0 40px ${glowColor}cc,
+                      0 0 80px ${glowColor}88,
+                      0 0 120px ${glowColor}44
+                    `,
+                    letterSpacing: -4,
+                  }}
+                >
+                  {displayRating}
+                </div>
 
-              {/* Metrics rows */}
-              <div className="flex flex-col px-[60px] mt-[40px] gap-[28px]">
-                {METRICS.map(m => {
-                  const val = ratings[m.key]
-                  const color = getRatingColor(val)
-                  const pct = getProgressPercent(val)
-                  return (
-                    <div key={m.key} className="flex items-center gap-[24px]">
-                      <span className="text-white text-[40px] font-[600] w-[320px] shrink-0">{m.label}</span>
-                      <div className="flex-1 h-[40px] bg-white/10 rounded-[4px] overflow-hidden">
+                {/* Tier label */}
+                <div
+                  style={{
+                    fontSize: 52,
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    letterSpacing: 20,
+                    textTransform: 'uppercase',
+                    marginTop: 12,
+                  }}
+                >
+                  {pslTier}
+                </div>
+
+                {/* Metric bars */}
+                <div style={{ width: '100%', marginTop: 80, display: 'flex', flexDirection: 'column', gap: 48 }}>
+                  {METRICS.map(m => {
+                    const val = ratings[m.key]
+                    const pct = getProgressPercent(val)
+                    return (
+                      <div key={m.key}>
                         <div
-                          className="h-full rounded-[4px]"
-                          style={{ width: `${pct}%`, backgroundColor: color }}
-                        />
+                          style={{
+                            fontSize: 42,
+                            fontWeight: 500,
+                            fontStyle: 'italic',
+                            color: '#ffffffbb',
+                            marginBottom: 16,
+                          }}
+                        >
+                          {m.label}
+                        </div>
+                        {/* Bar container — NO overflow hidden so glow bleeds */}
+                        <div style={{ position: 'relative', width: '100%', height: 32 }}>
+                          {/* Track background */}
+                          <div
+                            style={{
+                              position: 'absolute',
+                              inset: 0,
+                              background: '#1a1e2a',
+                              borderRadius: 16,
+                            }}
+                          />
+                          {/* Glow layer (wider, blurred) */}
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: -6,
+                              bottom: -6,
+                              left: 0,
+                              width: `${pct}%`,
+                              borderRadius: 20,
+                              background: glowColor,
+                              filter: 'blur(12px)',
+                              opacity: 0.6,
+                            }}
+                          />
+                          {/* Fill bar */}
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: 0,
+                              bottom: 0,
+                              left: 0,
+                              width: `${pct}%`,
+                              borderRadius: 16,
+                              background: `linear-gradient(90deg, ${glowColor}cc, ${glowColor})`,
+                              boxShadow: `0 0 8px ${glowColor}aa`,
+                            }}
+                          />
+                        </div>
                       </div>
-                      <span className="text-white text-[44px] font-[800] w-[80px] text-right">{val % 1 === 0 ? val : val.toFixed(1)}</span>
-                    </div>
-                  )
-                })}
-              </div>
+                    )
+                  })}
+                </div>
 
-              {/* Divider */}
-              <div className="mx-[60px] mt-[40px]" style={{ borderTop: '3px solid #444' }} />
-
-              {/* Footer: Top Halo / Failo */}
-              <div className="flex flex-col px-[60px] mt-[40px] gap-[12px]">
-                <span className="text-white text-[38px] font-[600]">Top Halo: {topHalo}</span>
-                <span className="text-white text-[38px] font-[600]">Top Failo: {topFailo}</span>
               </div>
             </div>
           </div>
@@ -199,7 +304,33 @@ export default function RatingsTemplate() {
               Upload Image
             </button>
 
-            {/* Rating sliders */}
+            {/* Overall rating slider */}
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-sm font-bold">Overall Rating</label>
+                <input
+                  type="number"
+                  value={overallRating.toFixed(1)}
+                  onChange={(e) => setOverallRating(Math.max(1, Math.min(8, parseFloat(e.target.value) || 1)))}
+                  className="w-16 bg-background border border-border rounded px-2 py-1 text-sm text-right"
+                  min={1}
+                  max={8}
+                  step={0.1}
+                />
+              </div>
+              <input
+                type="range"
+                min={1}
+                max={8}
+                step={0.1}
+                value={overallRating}
+                onChange={(e) => setOverallRating(parseFloat(e.target.value))}
+              />
+            </div>
+
+            <div className="border-t border-border my-4" />
+
+            {/* Metric sliders */}
             {METRICS.map(m => (
               <div key={m.key} className="mb-4">
                 <div className="flex justify-between items-center mb-2">
@@ -224,12 +355,6 @@ export default function RatingsTemplate() {
                 />
               </div>
             ))}
-
-            {/* PSL average display */}
-            <div className="flex justify-between items-center py-3 border-t border-border mt-2">
-              <span className="text-sm font-bold">PSL Average</span>
-              <span className="text-lg font-bold text-accent">{pslAverage.toFixed(1)} / 8</span>
-            </div>
 
             {/* Download button */}
             <button
@@ -257,7 +382,7 @@ export default function RatingsTemplate() {
               </li>
               <li className="flex gap-3">
                 <span className="text-accent font-semibold shrink-0">3.</span>
-                PSL average, top halo, and top failo are calculated automatically
+                PSL average, strongest/weakest are calculated automatically
               </li>
               <li className="flex gap-3">
                 <span className="text-accent font-semibold shrink-0">4.</span>

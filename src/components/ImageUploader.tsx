@@ -5,11 +5,14 @@ interface ImageUploaderProps {
   imageUrl: string | null
   size?: number
   className?: string
+  shape?: 'circle' | 'hexagon'
 }
 
 interface Position { x: number; y: number }
 
-export default function ImageUploader({ onImageChange, imageUrl, size = 240, className = '' }: ImageUploaderProps) {
+const HEX_CLIP = 'polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)'
+
+export default function ImageUploader({ onImageChange, imageUrl, size = 240, className = '', shape = 'circle' }: ImageUploaderProps) {
   const [scale, setScale] = useState(1)
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 })
   const [dragging, setDragging] = useState(false)
@@ -44,8 +47,8 @@ export default function ImageUploader({ onImageChange, imageUrl, size = 240, cla
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden rounded-full bg-white/5 border-2 border-white/10 flex items-center justify-center cursor-move ${className}`}
-      style={{ width: size, height: size }}
+      className={`relative overflow-hidden bg-white/5 border-2 border-white/10 flex items-center justify-center cursor-move ${shape === 'circle' ? 'rounded-full' : ''} ${className}`}
+      style={{ width: size, height: size, ...(shape === 'hexagon' ? { clipPath: HEX_CLIP } : {}) }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
