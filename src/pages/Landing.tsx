@@ -28,9 +28,10 @@ export default function Landing() {
         </div>
       </main>
       <footer className="p-6 flex justify-center gap-6">
-        <a href="https://basementlaboratories.com/privacy.html" className="text-[13px] text-secondary/60 hover:text-secondary transition-colors">Privacy</a>
+        <a href="/privacy" className="text-[13px] text-secondary/60 hover:text-secondary transition-colors">Privacy</a>
         <a href="https://basementlaboratories.com/terms.html" className="text-[13px] text-secondary/60 hover:text-secondary transition-colors">Terms</a>
         <a href="mailto:jacked@basementlaboratories.com" className="text-[13px] text-secondary/60 hover:text-secondary transition-colors">Contact</a>
+        <a href="/support" className="text-[13px] text-secondary/60 hover:text-secondary transition-colors">Support</a>
       </footer>
     </div>
   )
