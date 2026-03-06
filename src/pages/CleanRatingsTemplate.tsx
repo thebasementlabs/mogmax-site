@@ -24,14 +24,18 @@ export default function CleanRatingsTemplate() {
 
   const handleDownloadPng = useCallback(async () => {
     if (!templateRef.current) return
-    const dataUrl = await toPng(templateRef.current, {
+    const options = {
       width: 1080,
       height: 1080,
       pixelRatio: 1,
+      cacheBust: true,
       style: {
         transform: 'none',
       },
-    })
+    }
+    // First call warms up image cache in cloned DOM — fixes blank images on mobile
+    await toPng(templateRef.current, options)
+    const dataUrl = await toPng(templateRef.current, options)
     const link = document.createElement('a')
     link.download = 'mogmaxx-rating.png'
     link.href = dataUrl
