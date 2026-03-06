@@ -72,7 +72,7 @@ export default function RatingsTemplate() {
         {/* Template Preview */}
         <div className="flex flex-col items-center gap-6">
           <h1 className="font-heading italic text-3xl font-bold">Template Preview</h1>
-          <div className="border border-white/20 rounded-lg" style={{ width: 360, height: 640, overflow: 'hidden' }}>
+          <div className="rounded-lg" style={{ width: 360, height: 640, overflow: 'hidden' }}>
             <div
               ref={templateRef}
               className="relative overflow-hidden flex flex-col items-center"
@@ -80,6 +80,9 @@ export default function RatingsTemplate() {
                 width: 1080,
                 height: 1920,
                 background: '#1C1C1E',
+                border: `6px solid ${glowColor}88`,
+                borderRadius: 40,
+                boxSizing: 'border-box',
                 transform: 'scale(0.3333)',
                 transformOrigin: 'top left',
               }}
@@ -93,6 +96,7 @@ export default function RatingsTemplate() {
                   right: 0,
                   bottom: 0,
                   borderRadius: 0,
+                  boxShadow: `inset 0 0 20px ${glowColor}15, inset 0 0 60px ${glowColor}08`,
                   background: '#1C1C1E',
                   display: 'flex',
                   flexDirection: 'column',
@@ -101,8 +105,34 @@ export default function RatingsTemplate() {
                   padding: '120px 80px 80px',
                 }}
               >
+                {/* Logo above image */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 14,
+                    background: '#1C1C1E',
+                    padding: '14px 28px',
+                    borderRadius: 30,
+                    border: '1.5px solid rgba(232, 85, 109, 0.4)',
+                    marginBottom: 48,
+                  }}
+                >
+                  <img src="/logo.png" alt="MogMaxx" style={{ width: 57, height: 57, borderRadius: 13, background: '#000' }} />
+                  <span style={{ color: '#ffffff', fontSize: 48, fontWeight: 800, letterSpacing: 2 }}>MOGMAXX</span>
+                  <img
+                    src="/app-store-icon.svg"
+                    alt="App Store"
+                    style={{
+                      width: 57,
+                      height: 57,
+                      borderRadius: 13,
+                    }}
+                  />
+                </div>
+
                 {/* Hexagonal image frame */}
-                <div style={{ position: 'relative', width: 532, height: 532, marginBottom: 72 }}>
+                <div style={{ position: 'relative', width: 532, height: 532, marginBottom: 48 }}>
                   {/* SVG hex border with neon glow via drop-shadow */}
                   <svg
                     viewBox="0 0 532 532"
@@ -140,32 +170,6 @@ export default function RatingsTemplate() {
                   </div>
                 </div>
 
-                {/* Logo above rating */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 14,
-                    background: '#1C1C1E',
-                    padding: '14px 28px',
-                    borderRadius: 30,
-                    border: '1.5px solid rgba(232, 85, 109, 0.4)',
-                    marginBottom: 24,
-                  }}
-                >
-                  <img src="/logo.png" alt="MogMaxx" style={{ width: 57, height: 57, borderRadius: 13, background: '#000' }} />
-                  <span style={{ color: '#ffffff', fontSize: 48, fontWeight: 800, letterSpacing: 2 }}>MOGMAXX</span>
-                  <img
-                    src="/app-store-icon.svg"
-                    alt="App Store"
-                    style={{
-                      width: 57,
-                      height: 57,
-                      borderRadius: 13,
-                    }}
-                  />
-                </div>
-
                 {/* PSL Rating number */}
                 <div
                   style={{
@@ -201,7 +205,7 @@ export default function RatingsTemplate() {
                 </div>
 
                 {/* Metric stat cards — 2x2 grid */}
-                <div style={{ width: '100%', marginTop: 80, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+                <div style={{ width: '100%', marginTop: 80, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
                   {METRICS.map(m => {
                     const val = ratings[m.key]
                     const pct = getProgressPercent(val)
@@ -212,39 +216,73 @@ export default function RatingsTemplate() {
                       <div
                         key={m.key}
                         style={{
-                          background: '#2C2C2E',
-                          border: '1px solid #3A3A3C',
-                          borderRadius: 24,
-                          padding: '40px 36px 36px',
+                          background: 'linear-gradient(145deg, #252528 0%, #1e1e21 100%)',
+                          border: `1.5px solid ${glowColor}55`,
+                          borderRadius: 28,
+                          padding: '44px 40px 40px',
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: 16,
+                          gap: 20,
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.4), 0 0 12px ${glowColor}22, 0 0 30px ${glowColor}11`,
                         }}
                       >
                         {/* Label */}
                         <div
                           style={{
-                            fontSize: 36,
-                            fontWeight: 600,
-                            color: '#8E8E93',
-                            letterSpacing: 4,
+                            fontSize: 34,
+                            fontWeight: 700,
+                            color: '#ffffffcc',
+                            letterSpacing: 5,
                             textTransform: 'uppercase',
                           }}
                         >
                           {m.label}
                         </div>
                         {/* Score + dot + tier */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                          <span style={{ fontSize: 72, fontWeight: 700, color: metricColor, lineHeight: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                          <span style={{ fontSize: 80, fontWeight: 800, color: metricColor, lineHeight: 1 }}>
                             {displayVal}
                           </span>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.6)', fontSize: 32, fontWeight: 500 }}>
-                            <span style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: metricColor, display: 'inline-block' }} />
+                          <span style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.55)', fontSize: 30, fontWeight: 500 }}>
+                            <span
+                              style={{
+                                width: 14,
+                                height: 14,
+                                borderRadius: '50%',
+                                backgroundColor: metricColor,
+                                display: 'inline-block',
+                                boxShadow: `0 0 6px ${metricColor}aa`,
+                              }}
+                            />
                             {metricTier}
                           </span>
                         </div>
                         {/* Progress bar */}
-                        <div style={{ position: 'relative', width: '100%', height: 20, background: 'rgba(255,255,255,0.1)', borderRadius: 10, overflow: 'hidden' }}>
+                        <div style={{ position: 'relative', width: '100%', height: 18, marginTop: 4 }}>
+                          {/* Track */}
+                          <div
+                            style={{
+                              position: 'absolute',
+                              inset: 0,
+                              background: 'rgba(255,255,255,0.06)',
+                              borderRadius: 9,
+                            }}
+                          />
+                          {/* Glow bleed */}
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: -4,
+                              bottom: -4,
+                              left: 0,
+                              width: `${pct}%`,
+                              borderRadius: 14,
+                              background: metricColor,
+                              filter: 'blur(10px)',
+                              opacity: 0.4,
+                            }}
+                          />
+                          {/* Fill */}
                           <div
                             style={{
                               position: 'absolute',
@@ -252,9 +290,9 @@ export default function RatingsTemplate() {
                               bottom: 0,
                               left: 0,
                               width: `${pct}%`,
-                              borderRadius: 10,
-                              backgroundColor: metricColor,
-                              boxShadow: `0 0 12px ${metricColor}80`,
+                              borderRadius: 9,
+                              background: `linear-gradient(90deg, ${metricColor}cc, ${metricColor})`,
+                              boxShadow: `0 0 10px ${metricColor}66`,
                             }}
                           />
                         </div>
