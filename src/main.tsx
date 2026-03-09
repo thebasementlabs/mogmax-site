@@ -9,6 +9,7 @@ import RatingsTemplate from './pages/RatingsTemplate'
 import ExampleContent from './pages/ExampleContent'
 import Support from './pages/Support'
 import Privacy from './pages/Privacy'
+import SubmitVideo from './pages/SubmitVideo'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/creator/example-content" element={<ExampleContent />} />
         <Route path="/support" element={<Support />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/submit-video" element={<SubmitVideo />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
