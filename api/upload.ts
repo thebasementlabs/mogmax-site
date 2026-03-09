@@ -11,6 +11,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const jsonResponse = await handleUpload({
       body,
       request: req,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
       onBeforeGenerateToken: async () => ({
         allowedContentTypes: [
           'video/mp4',
@@ -25,6 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
     return res.status(200).json(jsonResponse);
   } catch (error) {
+    console.error('Upload error:', error);
     return res.status(400).json({ error: (error as Error).message });
   }
 }
