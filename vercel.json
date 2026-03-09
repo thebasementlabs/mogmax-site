@@ -1,4 +1,5 @@
 {
+  "devCommand": "vite --port 3456",
   "redirects": [
     { "source": "/download", "destination": "https://apps.apple.com/ca/app/mogmaxx-get-shredded-ai/id6757873783", "permanent": false }
   ],
