@@ -6,9 +6,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { tiktokUsername, discord, videoLink, recordingUrl } = req.body;
+  const { tiktokUsername, discord, videoLink, recordingUrl, viewCount } = req.body;
 
-  if (!tiktokUsername || !discord || !videoLink || !recordingUrl) {
+  if (!tiktokUsername || !discord || !videoLink || !recordingUrl || !viewCount) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -25,7 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: 'Sheet1!A:H',
+      range: 'Sheet1!A:I',
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [[
@@ -34,6 +34,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           discord,
           videoLink,
           recordingUrl,
+          viewCount,
           'pending',
           '',
           '',

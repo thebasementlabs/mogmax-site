@@ -5,6 +5,7 @@ export default function SubmitVideo() {
   const [tiktokUsername, setTiktokUsername] = useState('')
   const [discord, setDiscord] = useState('')
   const [videoLink, setVideoLink] = useState('')
+  const [viewCount, setViewCount] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [status, setStatus] = useState<'idle' | 'uploading' | 'submitting' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
@@ -48,6 +49,7 @@ export default function SubmitVideo() {
     if (!discord.trim()) return 'Discord username is required'
     if (!videoLink.trim()) return 'Video link is required'
     if (!videoLink.includes('tiktok.com')) return 'Please enter a valid TikTok link'
+    if (!viewCount) return 'Please select a view count'
     if (!file) return 'Please upload your analytics screen recording'
     return null
   }
@@ -81,6 +83,7 @@ export default function SubmitVideo() {
           discord: discord.trim(),
           videoLink: videoLink.trim(),
           recordingUrl: blob.url,
+          viewCount,
         }),
       })
 
@@ -117,6 +120,7 @@ export default function SubmitVideo() {
               setTiktokUsername('')
               setDiscord('')
               setVideoLink('')
+              setViewCount('')
               setFile(null)
               setErrorMessage('')
             }}
@@ -179,6 +183,22 @@ export default function SubmitVideo() {
                 disabled={isSubmitting}
                 className="w-full bg-card border border-border rounded-lg px-4 py-3 text-white placeholder:text-secondary/50 focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1.5">View Count</label>
+              <select
+                value={viewCount}
+                onChange={(e) => setViewCount(e.target.value)}
+                disabled={isSubmitting}
+                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50 appearance-none"
+              >
+                <option value="" disabled>Select view count</option>
+                <option value="25k">25k</option>
+                <option value="100k">100k</option>
+                <option value="500k">500k</option>
+                <option value="1M">1M</option>
+              </select>
             </div>
 
             <div>
