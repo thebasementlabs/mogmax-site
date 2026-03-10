@@ -4,28 +4,16 @@ import { toPng } from 'html-to-image'
 import ImageUploader from '../components/ImageUploader'
 import { getTierLabel, getRatingColor, getProgressPercent } from '../utils/ratings'
 
-const TOP_METRICS = [
+const METRICS = [
   { key: 'psl', label: 'PSL', default: 6.5 },
   { key: 'potential', label: 'Potential', default: 8 },
-] as const
-
-const BOTTOM_METRICS = [
   { key: 'eyes', label: 'Eyes', default: 6.5 },
   { key: 'midface', label: 'Midface', default: 7 },
   { key: 'lowerThird', label: 'Lower Third', default: 7 },
   { key: 'upperThird', label: 'Upper Third', default: 7.5 },
 ] as const
 
-const METRICS = [...TOP_METRICS, ...BOTTOM_METRICS] as const
-
 type MetricKey = typeof METRICS[number]['key']
-
-function getShortTier(rating: number, gender: 'male' | 'female'): string {
-  const full = getTierLabel(rating, '', gender)
-  // For tiers like "Gigachad / Adamlite", return just "Gigachad"
-  const slash = full.indexOf(' / ')
-  return slash > 0 ? full.substring(0, slash) : full
-}
 
 export default function RatingsTemplate() {
   const [gender, setGender] = useState<'male' | 'female'>('male')
@@ -94,9 +82,10 @@ export default function RatingsTemplate() {
                 width: 1080,
                 height: 1920,
                 background: 'radial-gradient(ellipse at 50% 30%, #30121c 0%, #1c0b10 35%, #0e0508 65%, #050105 100%)',
-                border: `6px solid ${glowColor}88`,
+                border: `5px solid ${glowColor}66`,
                 borderRadius: 40,
                 boxSizing: 'border-box',
+                boxShadow: `inset 0 0 60px rgba(0,0,0,0.5), 0 0 30px ${glowColor}33, 0 0 80px ${glowColor}15`,
                 transform: 'scale(0.3333)',
                 transformOrigin: 'top left',
               }}
@@ -116,6 +105,31 @@ export default function RatingsTemplate() {
                   padding: '100px 60px 60px',
                 }}
               >
+              {/* Warm light source behind profile area */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 80,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: 700,
+                  height: 700,
+                  borderRadius: '50%',
+                  background: `radial-gradient(circle, ${glowColor}15 0%, ${glowColor}08 40%, transparent 70%)`,
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              />
+              {/* Vignette overlay */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.4) 100%)',
+                  pointerEvents: 'none',
+                  zIndex: 1,
+                }}
+              />
                 {/* Logo above image */}
                 <div
                   style={{
@@ -123,17 +137,18 @@ export default function RatingsTemplate() {
                     alignItems: 'center',
                     gap: 14,
                     marginBottom: 40,
+                    zIndex: 2,
                   }}
                 >
-                  <img src="/logo.png" alt="MogMaxx" style={{ width: 57, height: 57, borderRadius: 13, background: '#000' }} />
-                  <span style={{ color: '#ffffff', fontSize: 48, fontWeight: 800, letterSpacing: 2 }}>MOGMAXX</span>
+                  <img src="/logo.png" alt="MogMaxx" style={{ width: 74, height: 74, borderRadius: 17, background: '#000' }} />
+                  <span style={{ color: '#ffffff', fontSize: 62, fontWeight: 800, letterSpacing: 3 }}>MOGMAXX</span>
                   <img
                     src="/app-store-icon.svg"
                     alt="App Store"
                     style={{
-                      width: 57,
-                      height: 57,
-                      borderRadius: 13,
+                      width: 74,
+                      height: 74,
+                      borderRadius: 17,
                     }}
                   />
                 </div>
@@ -141,10 +156,10 @@ export default function RatingsTemplate() {
                 {/* Circular image frame */}
                 <div style={{
                   position: 'relative',
-                  width: 480,
-                  height: 480,
+                  width: 624,
+                  height: 624,
                   marginBottom: -140,
-                  zIndex: 2,
+                  zIndex: 3,
                   borderRadius: '50%',
                   border: `5px solid ${glowColor}`,
                   boxShadow: `0 0 15px ${glowColor}aa, 0 0 40px ${glowColor}55, 0 0 80px ${glowColor}22`,
@@ -152,34 +167,34 @@ export default function RatingsTemplate() {
                   <ImageUploader
                     imageUrl={imageUrl}
                     onImageChange={setImageUrl}
-                    size={470}
+                    size={614}
                     shape="circle"
                     className="!border-0"
                   />
                 </div>
 
                 {/* Metric stat cards — 3x2 grid */}
-                <div style={{ width: '100%', flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignContent: 'stretch', paddingTop: 80 }}>
+                <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignContent: 'start', paddingTop: 80, zIndex: 2 }}>
                   {METRICS.map(m => {
                     const val = ratings[m.key]
                     const pct = getProgressPercent(val)
                     const metricColor = getRatingColor(val)
                     const metricTier = getTierLabel(val, m.label, gender)
-
                     const displayVal = Number.isInteger(val) ? val.toString() : val.toFixed(1)
                     return (
                       <div
                         key={m.key}
                         style={{
-                          background: 'linear-gradient(145deg, #2a1f24 0%, #1c1418 100%)',
-                          border: `1.5px solid ${glowColor}44`,
+                          background: 'linear-gradient(160deg, #2e1e26 0%, #1e1218 50%, #150d12 100%)',
+                          border: `1.5px solid ${glowColor}33`,
+                          borderTop: `1.5px solid ${glowColor}55`,
                           borderRadius: 28,
                           padding: '44px 36px 40px',
                           display: 'flex',
                           flexDirection: 'column',
-                          justifyContent: 'flex-start',
+                          justifyContent: 'flex-end',
                           gap: 14,
-                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 24px rgba(0,0,0,0.5), 0 0 20px ${glowColor}22, 0 0 50px ${glowColor}11`,
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.5), 0 0 20px ${glowColor}18`,
                         }}
                       >
                         {/* Label */}
@@ -230,7 +245,7 @@ export default function RatingsTemplate() {
                             style={{
                               position: 'absolute',
                               inset: 0,
-                              background: 'rgba(255,255,255,0.06)',
+                              background: 'rgba(255,255,255,0.08)',
                               borderRadius: 11,
                             }}
                           />
