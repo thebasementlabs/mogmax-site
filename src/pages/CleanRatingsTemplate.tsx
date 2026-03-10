@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { toPng } from 'html-to-image'
 import ImageUploader from '../components/ImageUploader'
-import { getTierLabel } from '../utils/ratings'
+import { getTierLabel, getRatingColor } from '../utils/ratings'
 
 export default function CleanRatingsTemplate() {
   const [gender, setGender] = useState<'male' | 'female'>('male')
@@ -60,14 +60,18 @@ export default function CleanRatingsTemplate() {
         {/* Template Preview */}
         <div className="flex flex-col items-center gap-6">
           <h1 className="font-heading italic text-3xl font-bold">Template Preview</h1>
-          <div className="border border-white/20 rounded-lg" style={{ width: 540, height: 540, overflow: 'hidden' }}>
+          <div style={{ width: 540, height: 540, overflow: 'hidden', borderRadius: 20 }}>
             <div
               ref={templateRef}
               className="relative overflow-hidden flex flex-col items-center"
               style={{
                 width: 1080,
                 height: 1080,
-                background: '#1C1C1E',
+                background: 'radial-gradient(ellipse at 50% 30%, #30121c 0%, #1c0b10 35%, #0e0508 65%, #050105 100%)',
+                border: `5px solid ${glowColor}66`,
+                borderRadius: 40,
+                boxSizing: 'border-box',
+                boxShadow: `inset 0 0 60px rgba(0,0,0,0.5), 0 0 30px ${glowColor}33, 0 0 80px ${glowColor}15`,
                 transform: 'scale(0.5)',
                 transformOrigin: 'top left',
               }}
@@ -79,7 +83,7 @@ export default function CleanRatingsTemplate() {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  background: '#1C1C1E',
+                  background: 'radial-gradient(ellipse at 50% 30%, #30121c 0%, #1c0b10 35%, #0e0508 65%, #050105 100%)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -87,41 +91,49 @@ export default function CleanRatingsTemplate() {
                   padding: '80px 80px',
                 }}
               >
-                {/* Hexagonal image frame */}
-                <div style={{ position: 'relative', width: 440, height: 440, marginBottom: 64 }}>
-                  <svg
-                    viewBox="0 0 440 440"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      overflow: 'visible',
-                      filter: `
-                        drop-shadow(0 0 6px ${glowColor})
-                        drop-shadow(0 0 15px ${glowColor}aa)
-                        drop-shadow(0 0 35px ${glowColor}66)
-                        drop-shadow(0 0 70px ${glowColor}33)
-                      `,
-                      zIndex: 1,
-                    }}
-                  >
-                    <polygon
-                      points="220,3 408,112 408,330 220,440 32,330 32,112"
-                      fill="none"
-                      stroke={glowColor}
-                      strokeWidth="5"
-                    />
-                  </svg>
-                  <div style={{ position: 'absolute', inset: 0 }}>
-                    <ImageUploader
-                      imageUrl={imageUrl}
-                      onImageChange={setImageUrl}
-                      size={440}
-                      shape="hexagon"
-                      className="!bg-transparent !border-0"
-                    />
-                  </div>
+                {/* Warm light source behind image */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '10%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 700,
+                    height: 700,
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, ${glowColor}15 0%, ${glowColor}08 40%, transparent 70%)`,
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                  }}
+                />
+                {/* Vignette overlay */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.4) 100%)',
+                    pointerEvents: 'none',
+                    zIndex: 1,
+                  }}
+                />
+                {/* Circular image frame */}
+                <div style={{
+                  position: 'relative',
+                  width: 520,
+                  height: 520,
+                  marginBottom: 36,
+                  zIndex: 2,
+                  borderRadius: '50%',
+                  border: `5px solid ${glowColor}`,
+                  boxShadow: `0 0 15px ${glowColor}aa, 0 0 40px ${glowColor}55, 0 0 80px ${glowColor}22`,
+                }}>
+                  <ImageUploader
+                    imageUrl={imageUrl}
+                    onImageChange={setImageUrl}
+                    size={510}
+                    shape="circle"
+                    className="!border-0"
+                  />
                 </div>
 
                 {/* Logo above rating */}
@@ -129,23 +141,25 @@ export default function CleanRatingsTemplate() {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 14,
-                    background: '#1C1C1E',
-                    padding: '14px 28px',
+                    gap: 18,
+                    background: 'rgba(10, 5, 8, 0.35)',
+                    padding: '16px 32px',
                     borderRadius: 30,
-                    border: '1.5px solid rgba(232, 85, 109, 0.4)',
+                    border: `1.5px solid ${glowColor}55`,
+                    backdropFilter: 'blur(8px)',
                     marginBottom: 24,
+                    zIndex: 2,
                   }}
                 >
-                  <img src="/logo.png" alt="MogMaxx" style={{ width: 57, height: 57, borderRadius: 13, background: '#000' }} />
-                  <span style={{ color: '#ffffff', fontSize: 48, fontWeight: 800, letterSpacing: 2 }}>MOGMAXX</span>
+                  <img src="/logo.png" alt="MogMaxx" style={{ width: 74, height: 74, borderRadius: 17, background: '#000' }} />
+                  <span style={{ color: '#ffffff', fontSize: 62, fontWeight: 800, letterSpacing: 3 }}>MOGMAXX</span>
                   <img
                     src="/app-store-icon.svg"
                     alt="App Store"
                     style={{
-                      width: 57,
-                      height: 57,
-                      borderRadius: 13,
+                      width: 74,
+                      height: 74,
+                      borderRadius: 17,
                     }}
                   />
                 </div>
@@ -157,6 +171,7 @@ export default function CleanRatingsTemplate() {
                     fontWeight: 800,
                     color: '#fff',
                     lineHeight: 1,
+                    zIndex: 2,
                     textShadow: `
                       0 0 10px ${glowColor},
                       0 0 20px ${glowColor},
@@ -173,14 +188,29 @@ export default function CleanRatingsTemplate() {
                 {/* Tier label */}
                 <div
                   style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 16,
                     fontSize: 44,
                     fontWeight: 600,
                     color: '#ffffffaa',
                     letterSpacing: 18,
                     textTransform: 'uppercase',
                     marginTop: 8,
+                    zIndex: 2,
                   }}
                 >
+                  <span
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: '50%',
+                      backgroundColor: getRatingColor(psl),
+                      display: 'inline-block',
+                      boxShadow: `0 0 8px ${getRatingColor(psl)}aa`,
+                      flexShrink: 0,
+                    }}
+                  />
                   {pslTier}
                 </div>
               </div>
