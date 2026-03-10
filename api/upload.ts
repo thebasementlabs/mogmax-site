@@ -13,6 +13,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       request: req,
       token: process.env.BLOB_READ_WRITE_TOKEN,
       onBeforeGenerateToken: async () => ({
+        addRandomSuffix: true,
         allowedContentTypes: [
           'video/mp4',
           'video/quicktime',
