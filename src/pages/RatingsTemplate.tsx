@@ -4,14 +4,28 @@ import { toPng } from 'html-to-image'
 import ImageUploader from '../components/ImageUploader'
 import { getTierLabel, getRatingColor, getProgressPercent } from '../utils/ratings'
 
-const METRICS = [
-  { key: 'eyeArea', label: 'Eye Area', default: 6.5 },
-  { key: 'jawline', label: 'Jawline', default: 5 },
-  { key: 'cheekbones', label: 'Cheekbones', default: 6 },
-  { key: 'harmony', label: 'Harmony', default: 5.5 },
+const TOP_METRICS = [
+  { key: 'psl', label: 'PSL', default: 6.5 },
+  { key: 'potential', label: 'Potential', default: 8 },
 ] as const
 
+const BOTTOM_METRICS = [
+  { key: 'eyes', label: 'Eyes', default: 6.5 },
+  { key: 'midface', label: 'Midface', default: 7 },
+  { key: 'lowerThird', label: 'Lower Third', default: 7 },
+  { key: 'upperThird', label: 'Upper Third', default: 7.5 },
+] as const
+
+const METRICS = [...TOP_METRICS, ...BOTTOM_METRICS] as const
+
 type MetricKey = typeof METRICS[number]['key']
+
+function getShortTier(rating: number, gender: 'male' | 'female'): string {
+  const full = getTierLabel(rating, '', gender)
+  // For tiers like "Gigachad / Adamlite", return just "Gigachad"
+  const slash = full.indexOf(' / ')
+  return slash > 0 ? full.substring(0, slash) : full
+}
 
 export default function RatingsTemplate() {
   const [gender, setGender] = useState<'male' | 'female'>('male')
@@ -19,7 +33,6 @@ export default function RatingsTemplate() {
   const [ratings, setRatings] = useState<Record<MetricKey, number>>(
     Object.fromEntries(METRICS.map(m => [m.key, m.default])) as Record<MetricKey, number>
   )
-  const [overallRating, setOverallRating] = useState(5.8)
   const templateRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -34,8 +47,6 @@ export default function RatingsTemplate() {
     reader.onload = (ev) => setImageUrl(ev.target?.result as string)
     reader.readAsDataURL(file)
   }
-
-  const pslTier = getTierLabel(overallRating, 'PSL', gender)
 
   const handleDownloadPng = useCallback(async () => {
     if (!templateRef.current) return
@@ -58,7 +69,6 @@ export default function RatingsTemplate() {
   }, [])
 
   const glowColor = '#E8556D'
-  const displayRating = overallRating % 1 === 0 ? overallRating.toString() : overallRating.toFixed(1)
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center p-4 md:p-8">
@@ -83,7 +93,7 @@ export default function RatingsTemplate() {
               style={{
                 width: 1080,
                 height: 1920,
-                background: '#1C1C1E',
+                background: 'radial-gradient(ellipse at 50% 30%, #30121c 0%, #1c0b10 35%, #0e0508 65%, #050105 100%)',
                 border: `6px solid ${glowColor}88`,
                 borderRadius: 40,
                 boxSizing: 'border-box',
@@ -91,7 +101,7 @@ export default function RatingsTemplate() {
                 transformOrigin: 'top left',
               }}
             >
-              {/* Card container with neon glow border */}
+              {/* Card container */}
               <div
                 style={{
                   position: 'absolute',
@@ -99,14 +109,11 @@ export default function RatingsTemplate() {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  borderRadius: 0,
-                  boxShadow: `inset 0 0 20px ${glowColor}15, inset 0 0 60px ${glowColor}08`,
-                  background: '#1C1C1E',
+                  background: 'radial-gradient(ellipse at 50% 30%, #30121c 0%, #1c0b10 35%, #0e0508 65%, #050105 100%)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '120px 80px 80px',
+                  padding: '100px 60px 60px',
                 }}
               >
                 {/* Logo above image */}
@@ -115,11 +122,7 @@ export default function RatingsTemplate() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: 14,
-                    background: '#1C1C1E',
-                    padding: '14px 28px',
-                    borderRadius: 30,
-                    border: '1.5px solid rgba(232, 85, 109, 0.4)',
-                    marginBottom: 48,
+                    marginBottom: 40,
                   }}
                 >
                   <img src="/logo.png" alt="MogMaxx" style={{ width: 57, height: 57, borderRadius: 13, background: '#000' }} />
@@ -135,119 +138,79 @@ export default function RatingsTemplate() {
                   />
                 </div>
 
-                {/* Hexagonal image frame */}
-                <div style={{ position: 'relative', width: 532, height: 532, marginBottom: 48 }}>
-                  {/* SVG hex border with neon glow via drop-shadow */}
-                  <svg
-                    viewBox="0 0 532 532"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      overflow: 'visible',
-                      filter: `
-                        drop-shadow(0 0 6px ${glowColor})
-                        drop-shadow(0 0 15px ${glowColor}aa)
-                        drop-shadow(0 0 35px ${glowColor}66)
-                        drop-shadow(0 0 70px ${glowColor}33)
-                      `,
-                      zIndex: 1,
-                    }}
-                  >
-                    <polygon
-                      points="266,3 494,136 494,399 266,532 37,399 37,136"
-                      fill="none"
-                      stroke={glowColor}
-                      strokeWidth="5"
-                    />
-                  </svg>
-                  {/* Hex image */}
-                  <div style={{ position: 'absolute', inset: 0 }}>
-                    <ImageUploader
-                      imageUrl={imageUrl}
-                      onImageChange={setImageUrl}
-                      size={532}
-                      shape="hexagon"
-                      className="!bg-transparent !border-0"
-                    />
-                  </div>
+                {/* Circular image frame */}
+                <div style={{
+                  position: 'relative',
+                  width: 480,
+                  height: 480,
+                  marginBottom: -140,
+                  zIndex: 2,
+                  borderRadius: '50%',
+                  border: `5px solid ${glowColor}`,
+                  boxShadow: `0 0 15px ${glowColor}aa, 0 0 40px ${glowColor}55, 0 0 80px ${glowColor}22`,
+                }}>
+                  <ImageUploader
+                    imageUrl={imageUrl}
+                    onImageChange={setImageUrl}
+                    size={470}
+                    shape="circle"
+                    className="!border-0"
+                  />
                 </div>
 
-                {/* PSL Rating number */}
-                <div
-                  style={{
-                    fontSize: 200,
-                    fontWeight: 800,
-                    color: '#fff',
-                    lineHeight: 1,
-                    textShadow: `
-                      0 0 10px ${glowColor},
-                      0 0 20px ${glowColor},
-                      0 0 40px ${glowColor}cc,
-                      0 0 80px ${glowColor}88,
-                      0 0 120px ${glowColor}44
-                    `,
-                    letterSpacing: -4,
-                  }}
-                >
-                  {displayRating}
-                </div>
-
-                {/* Tier label */}
-                <div
-                  style={{
-                    fontSize: 48,
-                    fontWeight: 600,
-                    color: '#ffffffaa',
-                    letterSpacing: 18,
-                    textTransform: 'uppercase',
-                    marginTop: 12,
-                  }}
-                >
-                  {pslTier}
-                </div>
-
-                {/* Metric stat cards — 2x2 grid */}
-                <div style={{ width: '100%', marginTop: 80, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
+                {/* Metric stat cards — 3x2 grid */}
+                <div style={{ width: '100%', flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignContent: 'stretch', paddingTop: 80 }}>
                   {METRICS.map(m => {
                     const val = ratings[m.key]
                     const pct = getProgressPercent(val)
                     const metricColor = getRatingColor(val)
                     const metricTier = getTierLabel(val, m.label, gender)
+
                     const displayVal = Number.isInteger(val) ? val.toString() : val.toFixed(1)
                     return (
                       <div
                         key={m.key}
                         style={{
-                          background: 'linear-gradient(145deg, #252528 0%, #1e1e21 100%)',
-                          border: `1.5px solid ${glowColor}55`,
+                          background: 'linear-gradient(145deg, #2a1f24 0%, #1c1418 100%)',
+                          border: `1.5px solid ${glowColor}44`,
                           borderRadius: 28,
-                          padding: '44px 40px 40px',
+                          padding: '44px 36px 40px',
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: 20,
-                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.4), 0 0 12px ${glowColor}22, 0 0 30px ${glowColor}11`,
+                          justifyContent: 'flex-start',
+                          gap: 14,
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 24px rgba(0,0,0,0.5), 0 0 20px ${glowColor}22, 0 0 50px ${glowColor}11`,
                         }}
                       >
                         {/* Label */}
                         <div
                           style={{
-                            fontSize: 34,
+                            fontSize: 32,
                             fontWeight: 700,
-                            color: '#ffffffcc',
+                            color: '#ffffff',
                             letterSpacing: 5,
                             textTransform: 'uppercase',
                           }}
                         >
                           {m.label}
                         </div>
-                        {/* Score + dot + tier */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                          <span style={{ fontSize: 80, fontWeight: 800, color: metricColor, lineHeight: 1 }}>
+                        {/* Score + subtitle */}
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, marginTop: 12 }}>
+                          <span style={{ fontSize: 76, fontWeight: 800, color: metricColor, lineHeight: 1 }}>
                             {displayVal}
                           </span>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.55)', fontSize: 30, fontWeight: 500 }}>
+                          <span
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 10,
+                              fontSize: 24,
+                              fontWeight: 600,
+                              color: 'rgba(255,255,255,0.55)',
+                              letterSpacing: 1.5,
+                              textTransform: 'uppercase',
+                            }}
+                          >
                             <span
                               style={{
                                 width: 14,
@@ -262,31 +225,28 @@ export default function RatingsTemplate() {
                           </span>
                         </div>
                         {/* Progress bar */}
-                        <div style={{ position: 'relative', width: '100%', height: 18, marginTop: 4 }}>
-                          {/* Track */}
+                        <div style={{ position: 'relative', width: '100%', height: 22, marginTop: 4 }}>
                           <div
                             style={{
                               position: 'absolute',
                               inset: 0,
                               background: 'rgba(255,255,255,0.06)',
-                              borderRadius: 9,
+                              borderRadius: 11,
                             }}
                           />
-                          {/* Glow bleed */}
                           <div
                             style={{
                               position: 'absolute',
-                              top: -4,
-                              bottom: -4,
+                              top: -5,
+                              bottom: -5,
                               left: 0,
                               width: `${pct}%`,
-                              borderRadius: 14,
+                              borderRadius: 16,
                               background: metricColor,
-                              filter: 'blur(10px)',
-                              opacity: 0.4,
+                              filter: 'blur(14px)',
+                              opacity: 0.55,
                             }}
                           />
-                          {/* Fill */}
                           <div
                             style={{
                               position: 'absolute',
@@ -294,9 +254,9 @@ export default function RatingsTemplate() {
                               bottom: 0,
                               left: 0,
                               width: `${pct}%`,
-                              borderRadius: 9,
+                              borderRadius: 11,
                               background: `linear-gradient(90deg, ${metricColor}cc, ${metricColor})`,
-                              boxShadow: `0 0 10px ${metricColor}66`,
+                              boxShadow: `0 0 12px ${metricColor}88`,
                             }}
                           />
                         </div>
@@ -346,32 +306,6 @@ export default function RatingsTemplate() {
               </svg>
               Upload Image
             </button>
-
-            {/* Overall rating slider */}
-            <div className="mb-4">
-              <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-bold">Overall Rating</label>
-                <input
-                  type="number"
-                  value={overallRating.toFixed(1)}
-                  onChange={(e) => setOverallRating(Math.max(1, Math.min(8, parseFloat(e.target.value) || 1)))}
-                  className="w-16 bg-white/5 rounded-lg px-2 py-1 text-sm text-right"
-                  min={1}
-                  max={8}
-                  step={0.1}
-                />
-              </div>
-              <input
-                type="range"
-                min={1}
-                max={8}
-                step={0.1}
-                value={overallRating}
-                onChange={(e) => setOverallRating(parseFloat(e.target.value))}
-              />
-            </div>
-
-            <div className="border-t border-white/10 my-4" />
 
             {/* Metric sliders */}
             {METRICS.map(m => (

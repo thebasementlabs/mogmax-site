@@ -1,7 +1,7 @@
 export function getTierLabel(rating: number, _metric: string, gender: 'male' | 'female'): string {
   if (gender === 'female') {
-    if (rating >= 7.75) return 'True Eve / Tera Stacy'
-    if (rating >= 7) return 'Giga Stacy / Evelite'
+    if (rating >= 7.75) return 'True Eve'
+    if (rating >= 7) return 'Evelite'
     if (rating >= 6) return 'Stacy'
     if (rating >= 5.5) return 'Stacylite'
     if (rating >= 4.5) return 'HTB'
@@ -9,8 +9,8 @@ export function getTierLabel(rating: number, _metric: string, gender: 'male' | '
     if (rating >= 1.5) return 'LTB'
     return 'Subhuman'
   }
-  if (rating >= 7.75) return 'True Adam / Tera Chad'
-  if (rating >= 7) return 'Gigachad / Adamlite'
+  if (rating >= 7.75) return 'True Adam'
+  if (rating >= 7) return 'Adamlite'
   if (rating >= 6) return 'Chad'
   if (rating >= 5.5) return 'Chadlite'
   if (rating >= 4.5) return 'HTN'
