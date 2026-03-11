@@ -20,6 +20,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           'video/webm',
           'video/x-msvideo',
           'video/x-matroska',
+          'video/mov',
         ],
         maximumSizeInBytes: 100 * 1024 * 1024, // 100MB
       }),
