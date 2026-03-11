@@ -6,25 +6,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  const token = process.env.BLOB_READ_WRITE_TOKEN;
+  if (!token) {
+    console.error('BLOB_READ_WRITE_TOKEN is not set');
+    return res.status(500).json({ error: 'Server config error: missing blob token' });
+  }
+
   try {
     const body = req.body as HandleUploadBody;
+    console.log('Upload request type:', body?.type);
     const jsonResponse = await handleUpload({
       body,
       request: req,
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-      onBeforeGenerateToken: async () => ({
-        addRandomSuffix: true,
-        allowedContentTypes: [
-          'video/mp4',
-          'video/quicktime',
-          'video/webm',
-          'video/x-msvideo',
-          'video/x-matroska',
-          'video/mov',
-        ],
-        maximumSizeInBytes: 100 * 1024 * 1024, // 100MB
-      }),
-      onUploadCompleted: async () => {},
+      token,
+      onBeforeGenerateToken: async (pathname) => {
+        console.log('Generating token for:', pathname);
+        return {
+          addRandomSuffix: true,
+          allowedContentTypes: [
+            'video/mp4',
+            'video/quicktime',
+            'video/webm',
+            'video/x-msvideo',
+            'video/x-matroska',
+            'video/mov',
+          ],
+          maximumSizeInBytes: 100 * 1024 * 1024, // 100MB
+        };
+      },
+      onUploadCompleted: async ({ blob }) => {
+        console.log('Upload completed:', blob.url);
+      },
     });
     return res.status(200).json(jsonResponse);
   } catch (error) {
