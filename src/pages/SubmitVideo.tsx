@@ -144,9 +144,27 @@ export default function SubmitVideo() {
       <main className="flex-1 flex flex-col items-center px-6 py-8">
         <div className="max-w-lg w-full">
           <h1 className="text-3xl font-bold mb-2">Submit Your Video</h1>
-          <p className="text-secondary mb-8">
+          <p className="text-secondary mb-4">
             Submit your TikTok video for payout review. Upload a screen recording showing your video's analytics.
           </p>
+
+          <div className="bg-card border border-border rounded-xl p-5 mb-8">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-accent mb-2">Important</h2>
+            <p className="text-secondary text-sm mb-4">
+              Your screen recording <span className="text-white font-medium">must</span> show the video's viewer locations. See the example below for what this should look like.
+            </p>
+            <div className="rounded-lg overflow-hidden border border-border" style={{ maxWidth: 280, margin: '0 auto' }}>
+              <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube-nocookie.com/embed/MzKdSh5MmHk?rel=0&modestbranding=1"
+                  title="Example analytics recording"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
