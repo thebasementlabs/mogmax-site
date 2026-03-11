@@ -4,6 +4,7 @@
     { "source": "/download", "destination": "https://apps.apple.com/ca/app/mogmaxx-get-shredded-ai/id6757873783", "permanent": false }
   ],
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
