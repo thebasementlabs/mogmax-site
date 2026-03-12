@@ -10,7 +10,7 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
-  background: #1C1C1E;
+  background: #000;
   color: #fff;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
