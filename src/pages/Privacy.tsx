@@ -80,7 +80,22 @@ export default function Privacy() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">4. Third-Party Services</h2>
+          <h2 className="text-xl font-semibold mb-4">4. Face and Photo Data</h2>
+          <p className="text-secondary leading-relaxed mb-3">
+            Our app allows you to submit photos of yourself for body transformation visualization and appearance analysis. These photos may contain your face.
+          </p>
+          <ul className="text-secondary leading-relaxed list-disc list-inside space-y-2">
+            <li><strong>Collection:</strong> We collect only the photos you voluntarily provide within the app. We do not use facial recognition, Face ID, or biometric identification technology.</li>
+            <li><strong>Use:</strong> Your photos are sent to Google's Gemini API to generate transformation images or appearance analysis scores. No biometric identifiers or facial geometry data is extracted.</li>
+            <li><strong>Third-Party Sharing:</strong> Photos are transmitted to Google's Gemini API for processing only. We do not sell, share, or otherwise distribute your photos to any other third party.</li>
+            <li><strong>Storage:</strong> Photos are stored locally on your device only. We do not store your photos on any server.</li>
+            <li><strong>Retention:</strong> Photos remain on your device until you delete them from the app or uninstall the app. Google does not retain API input data after processing.</li>
+            <li><strong>Deletion:</strong> You can delete any photo or result from the app's history at any time.</li>
+          </ul>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold mb-4">5. Third-Party Services</h2>
           <p className="text-secondary leading-relaxed mb-3">
             The App uses the following third-party services that may collect data:
           </p>
@@ -120,7 +135,7 @@ export default function Privacy() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">5. Data Storage & Security</h2>
+          <h2 className="text-xl font-semibold mb-4">6. Data Storage & Security</h2>
           <ul className="text-secondary leading-relaxed list-disc list-inside space-y-2">
             <li><strong>On-device storage:</strong> Workout data, preferences, and transformation history are stored locally on your device using SQLite and are never transmitted to our servers.</li>
             <li><strong>No cloud accounts:</strong> The App does not use user accounts, cloud sync, or remote databases. Your workout data exists only on your device.</li>
@@ -130,14 +145,14 @@ export default function Privacy() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">6. App Tracking Transparency</h2>
+          <h2 className="text-xl font-semibold mb-4">7. App Tracking Transparency</h2>
           <p className="text-secondary leading-relaxed">
             The App requests your permission under Apple's App Tracking Transparency framework before collecting any identifier used for ad tracking. You can change this at any time in your device's Settings &gt; Privacy &gt; Tracking.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">7. Device Permissions</h2>
+          <h2 className="text-xl font-semibold mb-4">8. Device Permissions</h2>
           <p className="text-secondary leading-relaxed mb-3">The App may request the following permissions:</p>
           <ul className="text-secondary leading-relaxed list-disc list-inside space-y-1 mb-3">
             <li><strong>Camera</strong> — to take a photo for AI transformation</li>
@@ -151,14 +166,14 @@ export default function Privacy() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">8. Children's Privacy</h2>
+          <h2 className="text-xl font-semibold mb-4">9. Children's Privacy</h2>
           <p className="text-secondary leading-relaxed">
             The App is not intended for children under 13 (or the applicable age of digital consent in your jurisdiction). We do not knowingly collect personal information from children. If you believe a child has provided us with personal data, please contact us and we will delete it.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">9. Data Retention</h2>
+          <h2 className="text-xl font-semibold mb-4">10. Data Retention</h2>
           <ul className="text-secondary leading-relaxed list-disc list-inside space-y-1">
             <li><strong>On-device data</strong> is retained until you uninstall the App or clear App data.</li>
             <li><strong>Analytics data</strong> (Amplitude, Singular) is retained according to each provider's data retention policies.</li>
@@ -167,7 +182,7 @@ export default function Privacy() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">10. Your Rights & Choices</h2>
+          <h2 className="text-xl font-semibold mb-4">11. Your Rights & Choices</h2>
           <p className="text-secondary leading-relaxed mb-3">
             Depending on your jurisdiction (including under CCPA, GDPR, and similar laws), you may have the right to:
           </p>
@@ -181,14 +196,14 @@ export default function Privacy() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">11. Changes to This Policy</h2>
+          <h2 className="text-xl font-semibold mb-4">12. Changes to This Policy</h2>
           <p className="text-secondary leading-relaxed">
             We may update this Privacy Policy from time to time. We will notify you of material changes by updating the "Effective Date" at the top of this page. Continued use of the App after changes constitutes acceptance of the updated policy.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">12. Contact Us</h2>
+          <h2 className="text-xl font-semibold mb-4">13. Contact Us</h2>
           <p className="text-secondary leading-relaxed">
             If you have questions or concerns about this Privacy Policy, contact us at:
           </p>
